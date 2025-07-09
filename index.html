@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokyo Cyber Garage | JDM Import Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Barlow:wght@400;600&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-red: #ff003c;
+            --electric-blue: #00f0ff;
+            --metallic-silver: #c0c0c0;
+            --deep-black: #050505;
+        }
+       
+        body {
+            font-family: 'Barlow', sans-serif;
+            background-color: var(--deep-black);
+            color: white;
+            overflow-x: hidden;
+        }
+       
+        h1, h2, h3, h4, .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+       
+        .font-rajdhani {
+            font-family: 'Rajdhani', sans-serif;
+        }
+       
+        .neon-text {
+            text-shadow: 0 0 5px var(--neon-red), 0 0 10px var(--neon-red);
+        }
+       
+        .blue-neon-text {
+            text-shadow: 0 0 5px var(--electric-blue), 0 0 10px var(--electric-blue);
+        }
+       
+        .neon-border {
+            box-shadow: 0 0 5px var(--neon-red), 0 0 10px var(--neon-red);
+            border: 1px solid var(--neon-red);
+        }
+       
+        .blue-neon-border {
+            box-shadow: 0 0 5px var(--electric-blue), 0 0 10px var(--electric-blue);
+            border: 1px solid var(--electric-blue);
+        }
+       
+        .glow-hover:hover {
+            box-shadow: 0 0 15px var(--neon-red), 0 0 30px var(--neon-red);
+            transition: all 0.3s ease;
+        }
+       
+        .blue-glow-hover:hover {
+            box-shadow: 0 0 15px var(--electric-blue), 0 0 30px var(--electric-blue);
+            transition: all 0.3s ease;
+        }
+       
+        .dashboard-panel {
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(192, 192, 192, 0.1);
+        }
+       
+        .car-card {
+            transform: perspective(1000px) rotateY(0deg);
+            transition: transform 0.5s ease;
+        }
+       
+        .car-card:hover {
+            transform: perspective(1000px) rotateY(-5deg);
+        }
+       
+        .auction-tag {
+            clip-path: polygon(0 0, 100% 0, 90% 50%, 100% 100%, 0 100%);
+        }
+       
+        .speedlines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,0,60,0.05) 25%, transparent 25%) -50px 0,
+                        linear-gradient(225deg, rgba(255,0,60,0.05) 25%, transparent 25%) -50px 0,
+                        linear-gradient(315deg, rgba(255,0,60,0.05) 25%, transparent 25%),
+                        linear-gradient(45deg, rgba(255,0,60,0.05) 25%, transparent 25%);
+            background-size: 100px 100px;
+            opacity: 0.3;
+            z-index: -1;
+        }
+       
+        @keyframes neonPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+       
+        .neon-pulse {
+            animation: neonPulse 2s infinite;
+        }
+       
+        .countdown-digit {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--neon-red);
+            box-shadow: 0 0 5px var(--neon-red);
+        }
+       
+        .digital-dash {
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(to bottom, #111, #000);
+            border: 1px solid var(--electric-blue);
+            box-shadow: inset 0 0 10px var(--electric-blue), 0 0 20px var(--electric-blue);
+        }
+       
+        .nav-link::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: var(--neon-red);
+            transition: width 0.3s;
+        }
+       
+        .nav-link:hover::after {
+            width: 100%;
+        }
+       
+        .search-input:focus {
+            box-shadow: 0 0 10px var(--electric-blue);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Speedlines Background -->
+    <div class="speedlines fixed inset-0"></div>
+   
+    <!-- Header/Navigation -->
+    <header class="sticky top-0 z-50 bg-black bg-opacity-90 backdrop-filter backdrop-blur-lg border-b border-gray-800">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center neon-pulse">
+                        <i class="fas fa-car text-white text-xl"></i>
+                    </div>
+                    <h1 class="text-2xl font-orbitron neon-text">TOKYO <span class="text-electric-blue-400 blue-neon-text">CYBER</span> GARAGE</h1>
+                </div>
+               
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="nav-link text-white hover:text-red-500 font-rajdhani font-semibold">INVENTORY</a>
+                    <a href="#" class="nav-link text-white hover:text-red-500 font-rajdhani font-semibold">AUCTIONS</a>
+                    <a href="#" class="nav-link text-white hover:text-red-500 font-rajdhani font-semibold">IMPORT SERVICE</a>
+                    <a href="#" class="nav-link text-white hover:text-red-500 font-rajdhani font-semibold">JOIN GARAGE</a>
+                </nav>
+               
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 text-gray-400 hover:text-white">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="p-2 text-gray-400 hover:text-white">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <button class="md:hidden p-2 text-gray-400 hover:text-white">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+   
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <video autoplay muted loop class="absolute z-0 w-auto min-w-full min-h-full max-w-none">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-sports-car-driving-in-a-city-at-night-34530-large.mp4" type="video/mp4">
+        </video>
+       
+        <div class="relative z-10 text-center px-4">
+            <h2 class="text-4xl md:text-6xl font-orbitron neon-text mb-4">JDM LEGENDS <span class="blue-neon-text">AWAIT</span></h2>
+            <p class="text-xl md:text-2xl font-rajdhani mb-8 max-w-3xl mx-auto">Direct from Japan's auction houses to your garage. Authentic JDM imports with full transparency.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full glow-hover font-rajdhani text-lg transition-all duration-300">
+                    BROWSE INVENTORY <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button class="bg-transparent border-2 border-electric-blue-400 text-electric-blue-400 hover:bg-blue-900 hover:bg-opacity-20 font-bold py-3 px-8 rounded-full blue-glow-hover font-rajdhani text-lg transition-all duration-300">
+                    LIVE AUCTIONS <i class="fas fa-gavel ml-2"></i>
+                </button>
+            </div>
+        </div>
+       
+        <div class="absolute bottom-10 left-0 right-0 flex justify-center">
+            <a href="#featured" class="text-white animate-bounce">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </a>
+        </div>
+    </section>
+   
+    <!-- Featured Inventory -->
+    <section id="featured" class="py-16 bg-gradient-to-b from-black to-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-orbitron neon-text">FEATURED <span class="blue-neon-text">INVENTORY</span></h2>
+                <div class="relative w-64">
+                    <input type="text" placeholder="Search makes/models..." class="search-input w-full bg-gray-800 border border-gray-700 rounded-full py-2 px-4 text-white focus:outline-none focus:border-electric-blue-400 transition-all">
+                    <button class="absolute right-3 top-2 text-gray-400 hover:text-white">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+           
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Car Card 1 -->
+                <div class="car-card dashboard-panel rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Nissan Skyline R34" class="w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold font-rajdhani">Auction</div>
+                        <div class="absolute bottom-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-rajdhani">
+                            <i class="fas fa-map-marker-alt mr-1"></i> Osaka, JP
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-orbitron">Nissan Skyline R34 GT-R</h3>
+                            <span class="text-electric-blue-400 font-bold text-lg">¥4,200,000</span>
+                        </div>
+                        <div class="flex items-center text-gray-400 text-sm mb-4">
+                            <span class="mr-3"><i class="fas fa-tachometer-alt mr-1"></i> 42,000 km</span>
+                            <span><i class="fas fa-calendar-alt mr-1"></i> 2002</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex space-x-2">
+                                <span class="bg-gray-800 text-xs px-2 py-1 rounded">2.6L Twin Turbo</span>
+                                <span class="bg-gray-800 text-xs px-2 py-1 rounded">AWD</span>
+                                <span class="bg-gray-800 text-xs px-2 py-1 rounded">6-Speed</span>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t border-gray-800">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm">
+                                    <p class="text-gray-400">Auction ends in:</p>
+                                    <div class="countdown flex space-x-1 mt-1" data-end="2023-12-25T23:59:59">
+                                        <span class="countdown-digit px-2 py-1 rounded">23</span>:
+                                        <span class="countdown-digit px-2 py-1 rounded">59</span>:
+                                        <span class="countdown-digit px-2 py-1 rounded">59</span>
+                                    </div>
+                                </div>
+                                <button class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full text-sm glow-hover">
+                                    PLACE BID <i class="fas fa-gavel ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+                <!-- Car Card 2 -->
+                <div class="car-card dashboard-panel rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Toyota Supra MK4" class="w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4 bg-green-600 text-white px-3 py-1 rounded-full text-xs font-bold font-rajdhani">Fixed Price</div>
+                        <div class="absolute bottom-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-rajdhani">
+                            <i class="fas fa-map-marker-alt mr-1"></i> Tokyo, JP
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-orbitron">Toyota Supra MK4 Turbo</h3>
+                            <span class="text-electric-blue-400 font-bold text-lg">¥6,800,000</span>
+                        </div>
+                        <div class="flex items-center text-gray-400 text-sm mb-4">
+                            <span class="mr-3"><i class="fas fa-tachometer-alt mr-1"></i> 68,000 km</span>
+                            <span><i class="fas fa-calendar-alt mr-1"></i> 1998</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex space-x-2">
+                                <span class="bg-gray-800 text-xs px-2 py-1 rounded">3.0L Twin Turbo</span>
+                                <span class="bg-gray-800 text-xs px-2 py-1 rounded">RWD</span>
+                                <span class="bg-gray-800 text-xs px-2 py-1 rounded">6-Speed</span>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t border-gray-800">
+                            <button class="w-full bg-electric-blue-500 hover:bg-electric-blue-600 text-black font-bold py-3 px-4 rounded-full blue-glow-hover font-rajdhani">
+                                BUY NOW <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+               
+                <!-- Car Card 3 -->
+                <div class="car-card dashboard-panel rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Mazda RX-7 FD" class="w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold font-rajdhani">Auction</div>
+                        <div class="absolute bottom-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-rajdhani">
+                            <i class="fas fa-map-marker-alt mr-1"></i> Yokohama, JP
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-orbitron">Mazda RX-7 FD3S</h3>
+                            <span class="text-electric-blue-400 font-bold text-lg">¥3,500,000</span>
+                        </div>
+                        <div class="flex items-center text-gray-400 text-sm mb-4">
+                            <span class="mr-3"><i class="fas fa-tachometer-alt mr-1"></i> 55,000 km</span>
+                            <span><i class="fas fa-calendar-alt mr-1"></i> 1995</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex space-x-2">
+                                <span class="bg-gray-800 text-xs px-2 py-1 rounded">1.3L Twin Rotor</span>
+                                <span class="bg-gray-800 text-xs px-2 py-1 rounded">RWD</span>
+                                <span class="bg-gray-800 text-xs px-2 py-1 rounded">5-Speed</span>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t border-gray-800">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm">
+                                    <p class="text-gray-400">Auction ends in:</p>
+                                    <div class="countdown flex space-x-1 mt-1" data-end="2023-12-20T15:30:00">
+                                        <span class="countdown-digit px-2 py-1 rounded">12</span>:
+                                        <span class="countdown-digit px-2 py-1 rounded">45</span>:
+                                        <span class="countdown-digit px-2 py-1 rounded">30</span>
+                                    </div>
+                                </div>
+                                <button class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full text-sm glow-hover">
+                                    PLACE BID <i class="fas fa-gavel ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="text-center mt-12">
+                <button class="bg-transparent border-2 border-electric-blue-400 text-electric-blue-400 hover:bg-blue-900 hover:bg-opacity-20 font-bold py-3 px-8 rounded-full blue-glow-hover font-rajdhani text-lg transition-all duration-300">
+                    VIEW FULL INVENTORY <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+   
+    <!-- Auction Dashboard -->
+    <section class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-orbitron neon-text mb-4">LIVE <span class="blue-neon-text">AUCTION DASHBOARD</span></h2>
+                <p class="text-xl font-rajdhani max-w-3xl mx-auto">Real-time bidding on exclusive JDM vehicles direct from Japan's auction houses. Authentic imports with full auction sheets.</p>
+            </div>
+           
+            <div class="dashboard-panel rounded-xl p-6 mb-8">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                    <div>
+                        <h3 class="text-2xl font-orbitron mb-2">Nissan Skyline R32 GT-R</h3>
+                        <div class="flex items-center text-gray-400 text-sm">
+                            <span class="mr-3"><i class="fas fa-tachometer-alt mr-1"></i> 78,000 km</span>
+                            <span class="mr-3"><i class="fas fa-calendar-alt mr-1"></i> 1991</span>
+                            <span><i class="fas fa-map-marker-alt mr-1"></i> Nagoya, JP</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <div class="text-sm text-gray-400">Current Bid:</div>
+                        <div class="text-3xl font-orbitron text-electric-blue-400 blue-neon-text">¥2,850,000</div>
+                    </div>
+                </div>
+               
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <div class="relative h-64 md:h-96 bg-gray-800 rounded-lg overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Nissan Skyline R32" class="w-full h-full object-cover">
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                                <div class="flex justify-between items-center">
+                                    <div class="text-white font-rajdhani">
+                                        <span class="bg-red-600 text-white px-2 py-1 rounded-full text-xs font-bold">LIVE</span>
+                                        <span class="ml-2">Auction ends in: <span class="font-bold">12:45:30</span></span>
+                                    </div>
+                                    <button class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded-full text-xs glow-hover">
+                                        <i class="fas fa-heart mr-1"></i> Watch
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div>
+                        <div class="digital-dash rounded-lg p-6 h-full">
+                            <h4 class="font-orbitron text-lg mb-4 text-center">BIDDING CONTROL</h4>
+                           
+                            <div class="mb-6">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-400 font-rajdhani">Next Bid:</span>
+                                    <span class="font-orbitron">¥3,000,000</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-400 font-rajdhani">Bid Increment:</span>
+                                    <span class="font-orbitron">¥50,000</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-400 font-rajdhani">Bids:</span>
+                                    <span class="font-orbitron">14</span>
+                                </div>
+                            </div>
+                           
+                            <div class="mb-6">
+                                <label class="block text-gray-400 font-rajdhani text-sm mb-2">Your Max Bid (¥)</label>
+                                <input type="number" class="w-full bg-gray-800 border border-gray-700 rounded-lg py-2 px-3 text-white focus:outline-none focus:border-electric-blue-400 mb-2">
+                                <button class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full glow-hover font-rajdhani">
+                                    PLACE BID <i class="fas fa-gavel ml-1"></i>
+                                </button>
+                            </div>
+                           
+                            <div class="border-t border-gray-700 pt-4">
+                                <h5 class="font-rajdhani text-sm text-gray-400 mb-2">AUCTION STATUS</h5>
+                                <div class="flex items-center">
+                                    <div class="h-2 bg-gray-700 rounded-full flex-grow mr-2">
+                                        <div class="h-2 bg-red-500 rounded-full" style="width: 65%;"></div>
+                                    </div>
+                                    <span class="text-xs font-rajdhani">65% to reserve</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="text-center mt-8">
+                <button class="bg-transparent border-2 border-electric-blue-400 text-electric-blue-400 hover:bg-blue-900 hover:bg-opacity-20 font-bold py-3 px-8 rounded-full blue-glow-hover font-rajdhani text-lg transition-all duration-300">
+                    VIEW ALL LIVE AUCTIONS <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+   
+    <!-- Membership Benefits -->
+    <section class="py-16 bg-black">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-orbitron neon-text mb-4">JOIN THE <span class="blue-neon-text">GARAGE</span></h2>
+                <p class="text-xl font-rajdhani max-w-3xl mx-auto">Unlock exclusive benefits and priority access to rare JDM imports with our membership program.</p>
+            </div>
+           
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Tier 1 -->
+                <div class="dashboard-panel rounded-xl p-8 text-center hover:neon-border transition-all duration-300">
+                    <div class="bg-gray-800 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-car text-3xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-orbitron mb-2">DRIVER TIER</h3>
+                    <p class="text-gray-400 text-sm mb-6">Basic access to our marketplace</p>
+                    <div class="text-3xl font-orbitron text-electric-blue-400 mb-6">FREE</div>
+                    <ul class="text-left space-y-3 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Browse inventory</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Place bids on auctions</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Basic vehicle reports</span>
+                        </li>
+                        <li class="flex items-start text-gray-600">
+                            <i class="fas fa-times text-gray-600 mr-2 mt-1"></i>
+                            <span>No priority access</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full font-rajdhani">
+                        SIGN UP
+                    </button>
+                </div>
+               
+                <!-- Tier 2 -->
+                <div class="dashboard-panel rounded-xl p-8 text-center border-2 border-electric-blue-400 blue-neon-border transform scale-105 z-10">
+                    <div class="bg-electric-blue-900 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-bolt text-3xl text-electric-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-orbitron mb-2">TUNER TIER</h3>
+                    <p class="text-gray-400 text-sm mb-6">For serious collectors and enthusiasts</p>
+                    <div class="text-3xl font-orbitron text-electric-blue-400 mb-6">¥9,999<span class="text-lg">/month</span></div>
+                    <ul class="text-left space-y-3 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Everything in Driver Tier</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Priority auction access</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Full auction sheets & history</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Exclusive pre-market listings</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-electric-blue-500 hover:bg-electric-blue-600 text-black font-bold py-2 px-4 rounded-full blue-glow-hover font-rajdhani">
+                        UPGRADE NOW
+                    </button>
+                </div>
+               
+                <!-- Tier 3 -->
+                <div class="dashboard-panel rounded-xl p-8 text-center hover:neon-border transition-all duration-300">
+                    <div class="bg-red-900 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-crown text-3xl text-red-400"></i>
+                    </div>
+                    <h3 class="text-xl font-orbitron mb-2">VIP TIER</h3>
+                    <p class="text-gray-400 text-sm mb-6">Concierge service for elite collectors</p>
+                    <div class="text-3xl font-orbitron text-electric-blue-400 mb-6">¥49,999<span class="text-lg">/month</span></div>
+                    <ul class="text-left space-y-3 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Everything in Tuner Tier</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Personalized sourcing agent</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Exclusive VIP auctions</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>White-glove import service</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full glow-hover font-rajdhani">
+                        CONTACT US
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+   
+    <!-- Import Service -->
+    <section class="py-16 bg-gradient-to-b from-gray-900 to-black">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-orbitron neon-text mb-6">JDM <span class="blue-neon-text">IMPORT SERVICE</span></h2>
+                    <p class="text-lg font-rajdhani mb-8">Our team in Japan handles everything from auction bidding to export paperwork, delivering your dream car to your doorstep with full transparency.</p>
+                   
+                    <div class="space-y-6 mb-8">
+                        <div class="flex items-start">
+                            <div class="bg-electric-blue-900 text-electric-blue-400 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-orbitron mb-1">Vehicle Sourcing</h4>
+                                <p class="text-gray-400">We'll find exactly what you're looking for across Japan's auction houses and dealerships.</p>
+                            </div>
+                        </div>
+                       
+                        <div class="flex items-start">
+                            <div class="bg-electric-blue-900 text-electric-blue-400 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-orbitron mb-1">Auction Representation</h4>
+                                <p class="text-gray-400">Our agents bid on your behalf with real-time updates and condition reports.</p>
+                            </div>
+                        </div>
+                       
+                        <div class="flex items-start">
+                            <div class="bg-electric-blue-900 text-electric-blue-400 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-ship"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-orbitron mb-1">Export Logistics</h4>
+                                <p class="text-gray-400">We handle all export paperwork, shipping arrangements, and customs clearance.</p>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <button class="bg-electric-blue-500 hover:bg-electric-blue-600 text-black font-bold py-3 px-8 rounded-full blue-glow-hover font-rajdhani text-lg transition-all duration-300">
+                        LEARN ABOUT IMPORTING <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+               
+                <div class="relative">
+                    <div class="dashboard-panel rounded-xl overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Auction House" class="w-full h-auto">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 bg-red-600 text-white px-6 py-3 rounded-full font-orbitron text-lg transform rotate-6">
+                        TRUSTED SINCE 2012
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+   
+    <!-- Testimonials -->
+    <section class="py-16 bg-black">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-orbitron neon-text mb-4">TRUSTED BY <span class="blue-neon-text">COLLECTORS</span></h2>
+                <p class="text-xl font-rajdhani max-w-3xl mx-auto">Hear from enthusiasts who've imported their dream cars through Tokyo Cyber Garage.</p>
+            </div>
+           
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="dashboard-panel rounded-xl p-8 hover:neon-border transition-all duration-300">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-gray-800 mr-4 overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-orbitron">Mark S.</h4>
+                            <div class="flex text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">"The team found me a pristine R34 GT-R that exceeded all my expectations. The auction sheet was 100% accurate and the import process was seamless."</p>
+                    <div class="text-sm text-gray-500 font-rajdhani">
+                        <i class="fas fa-car mr-1"></i> 1999 Nissan Skyline GT-R
+                    </div>
+                </div>
+               
+                <!-- Testimonial 2 -->
+                <div class="dashboard-panel rounded-xl p-8 hover:neon-border transition-all duration-300">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-gray-800 mr-4 overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-orbitron">Lisa T.</h4>
+                            <div class="flex text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">"As a first-time importer, I was nervous about the process. Tokyo Cyber Garage walked me through every step and delivered my dream FD RX-7 right to my door."</p>
+                    <div class="text-sm text-gray-500 font-rajdhani">
+                        <i class="fas fa-car mr-1"></i> 1993 Mazda RX-7 Type R
+                    </div>
+                </div>
+               
+                <!-- Testimonial 3 -->
+                <div class="dashboard-panel rounded-xl p-8 hover:neon-border transition-all duration-300">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-gray-800 mr-4 overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="User" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-orbitron">James R.</h4>
+                            <div class="flex text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">"Their VIP service is worth every yen. My personal agent found me a low-mileage Supra that wasn't even listed publicly yet. Unmatched access to Japan's best cars."</p>
+                    <div class="text-sm text-gray-500 font-rajdhani">
+                        <i class="fas fa-car mr-1"></i> 1997 Toyota Supra RZ
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+   
+    <!-- Newsletter -->
+    <section class="py-16 bg-gradient-to-r from-gray-900 to-black">
+        <div class="container mx-auto px-4">
+            <div class="dashboard-panel rounded-xl p-8 md:p-12 max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-orbitron neon-text mb-4">GET <span class="blue-neon-text">MARKET UPDATES</span></h2>
+                <p class="text-xl font-rajdhani mb-8 max-w-2xl mx-auto">Subscribe to our newsletter for weekly JDM market insights, new arrivals, and exclusive member offers.</p>
+               
+                <div class="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+                    <input type="email" placeholder="Your email address" class="flex-grow bg-gray-800 border border-gray-700 rounded-full py-3 px-6 text-white focus:outline-none focus:border-electric-blue-400">
+                    <button class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full glow-hover font-rajdhani whitespace-nowrap">
+                        SUBSCRIBE <i class="fas fa-paper-plane ml-2"></i>
+                    </button>
+                </div>
+               
+                <p class="text-sm text-gray-500 mt-4">We respect your privacy. Unsubscribe at any time.</p>
+            </div>
+        </div>
+    </section>
+   
+    <!-- Footer -->
+    <footer class="bg-black py-12 border-t border-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div>
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-car text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-orbitron neon-text">TOKYO <span class="blue-neon-text">CYBER</span> GARAGE</h3>
+                    </div>
+                    <p class="text-gray-400 mb-6">Specializing in premium JDM imports direct from Japan's auction houses since 2012.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+               
+                <div>
+                    <h4 class="text-lg font-orbitron mb-4">NAVIGATION</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white font-rajdhani">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white font-rajdhani">Inventory</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white font-rajdhani">Auctions</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white font-rajdhani">Import Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white font-rajdhani">Membership</a></li>
+                    </ul>
+                </div>
+               
+                <div>
+                    <h4 class="text-lg font-orbitron mb-4">CONTACT</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-gray-400 mr-2 mt-1"></i>
+                            <span class="text-gray-400 font-rajdhani">Tokyo, Japan & Los Angeles, USA</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone text-gray-400 mr-2 mt-1"></i>
+                            <span class="text-gray-400 font-rajdhani">+81 3-1234-5678</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-gray-400 mr-2 mt-1"></i>
+                            <span class="text-gray-400 font-rajdhani">contact@tokyocybergarage.com</span>
+                        </li>
+                    </ul>
+                </div>
+               
+                <div>
+                    <h4 class="text-lg font-orbitron mb-4">BUSINESS HOURS</h4>
+                    <ul class="space-y-2">
+                        <li class="flex justify-between">
+                            <span class="text-gray-400 font-rajdhani">Mon-Fri</span>
+                            <span class="text-gray-400 font-rajdhani">9:00 - 18:00</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400 font-rajdhani">Saturday</span>
+                            <span class="text-gray-400 font-rajdhani">10:00 - 16:00</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400 font-rajdhani">Sunday</span>
+                            <span class="text-gray-400 font-rajdhani">Closed</span>
+                        </li>
+                    </ul>
+                   
+                    <div class="mt-6">
+                        <button class="bg-transparent border border-gray-700 text-white font-bold py-2 px-4 rounded-full hover:bg-gray-800 font-rajdhani text-sm">
+                            <i class="fas fa-comment-dots mr-2"></i> LIVE CHAT
+                        </button>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="border-t border-gray-900 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">© 2023 Tokyo Cyber Garage. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">Privacy Policy</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">Terms of Service</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">FAQ</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+   
+    <script>
+        // Countdown timer functionality
+        function updateCountdowns() {
+            const countdowns = document.querySelectorAll('.countdown');
+           
+            countdowns.forEach(countdown => {
+                const endTime = new Date(countdown.dataset.end).getTime();
+                const now = new Date().getTime();
+                const distance = endTime - now;
+               
+                if (distance < 0) {
+                    countdown.innerHTML = '<span class="text-red-500">Auction Ended</span>';
+                    return;
+                }
+               
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+               
+                const digits = countdown.querySelectorAll('.countdown-digit');
+                digits[0].textContent = hours.toString().padStart(2, '0');
+                digits[1].textContent = minutes.toString().padStart(2, '0');
+                digits[2].textContent = seconds.toString().padStart(2, '0');
+            });
+        }
+       
+        // Update countdowns every second
+        setInterval(updateCountdowns, 1000);
+        updateCountdowns(); // Initial call
+       
+        // Mobile menu toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.querySelector('.md\\:hidden');
+            // You would add click handler here for mobile menu
+           
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+       
+        // Simulate live auction updates
+        function simulateBidUpdates() {
+            const currentBidElement = document.querySelector('.digital-dash .text-3xl');
+            if (currentBidElement) {
+                const currentAmount = parseInt(currentBidElement.textContent.replace(/[^0-9]/g, ''));
+                const newAmount = currentAmount + Math.floor(Math.random() * 50000) + 10000;
+                currentBidElement.textContent = `¥${newAmount.toLocaleString()}`;
+               
+                // Flash animation
+                currentBidElement.classList.add('animate-pulse');
+                setTimeout(() => {
+                    currentBidElement.classList.remove('animate-pulse');
+                }, 1000);
+            }
+        }
+       
+        // Update bids randomly between 5-15 seconds
+        setInterval(simulateBidUpdates, Math.floor(Math.random() * 10000) + 5000);
+    </script>
+</body>
+</html>
